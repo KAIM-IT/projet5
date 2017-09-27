@@ -1,0 +1,76 @@
+{% extends '::base.html.twig' %}
+{% block javascripts %}
+    {% if is_granted(entities['Configuration']["Rôle"].modification) %}
+        <script type="text/javascript" src="{{ asset('js/oXHR.js') }}"></script>
+        <script src="{{ asset("js/jquery-1.10.2.js") }}"></script>
+        <script type="text/javascript" src="{{ asset('js/jquery-1.4.1.min.js') }}"></script>
+        <script type="text/javascript" src="{{asset('js/fonctionsGenerique.js')}}"></script>
+        <script type="text/javascript" src="{{asset('js/fonctionsRoles.js')}}"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('select').change(function () {
+                    var tabNomEntity = this.name.split('[');
+                    var nomEntity = tabNomEntity[0];
+                    var champsEntity = tabNomEntity[1].split(']');
+                    champsEntity = champsEntity[0];
+
+                    var donnee = {
+                        entity: nomEntity,
+                        champs: champsEntity,
+                        value: this.value,
+                        id: this.id
+                    };
+
+                    postPage("{{ url("nao_membres_maj_roles") }}", donnee, recRole, true);
+                });
+            });
+        </script>
+    {% endif%}
+{% endblock javascripts %}
+{% block body -%}
+    <h1>Définiton des roles</h1>
+
+    {% if is_granted(entities['Configuration']["Rôle"].modification) %}
+        {% for key_categorie,categorie in entities|sort %}
+            <p>    
+                {% if key_categorie != "N.D" %}
+                <h2>{{key_categorie}}</h2>
+                <div style="display: flex;display: -web-flex;flex-wrap: wrap;">
+                    {% for key_entity,entity in categorie|ksort %}
+                        <div style="padding: 5px;"> 
+                            <h3>{{ key_entity }}</h3>  
+                            <table>
+                                {% if entity.nomEntity != "NAOMembresBundle:Role" %}
+                                    <tr>
+                                        <td>Création</td><td>{{ (entity.creation|role(entity.nomEntity,"creation",entity.id+7845))|raw  }}</td>
+                                    </tr>
+                                {% endif %}
+                                <tr>
+                                    {% if entity.nomEntity == "NAOMembresBundle:Commentaires" %}
+                                        <td>Modération</td>
+                                    {% else %}
+                                        <td>Modification</td>
+                                    {% endif %}
+                                    <td>{{ (entity.modification|role(entity.nomEntity,"modification",entity.id+7548))|raw  }}</td>
+                                </tr>
+
+                                {% if entity.nomEntity != "NAOMembresBundle:Role" %}
+                                    <tr>
+                                        <td>Suppression</td><td>{{ (entity.suppression|role(entity.nomEntity,"suppression",entity.id+7564))|raw  }}</td>
+                                    </tr>
+                                {% endif %}
+                            </table>
+                        </div>
+                    {% endfor %}
+                </div>        
+            </p>
+            {% if  not loop.last %}
+                <hr>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% else %}
+    Accès refusé
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+
+    <h1>Utilisateurs</h1>
+    {% if is_granted("ROLE_NATURALISTE") %}
+        <ul class="record_actions">
+            {% if is_granted(roles.creation) %}
+            <li><a href="{{ path('nao_membres_new') }}">Créer un utilisateur</a></li>
+            {% endif %}
+            {% if is_granted(rolesRole.modification) %}
+            <li><a href="{{ path('nao_membres_defRoles') }}">Définition des roles</a></li>
+            {% endif %}
+        </ul>
+
+        <table class="records_list">
+            <thead>
+                <tr>
+                    <th>Pseudo</th>
+                    <th>Activé</th>
+                    <th>Roles</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set index = 0 %}
+                {% for entity in entities %}
+                    {% if index % 2 == 0 %}
+                        <tr class="td-pair">
+                        {% else %}
+                        <tr class="td-impair">
+                        {% endif %}
+                        <td><a href="{{ path('nao_membres_show', { 'id': entity.id }) }}">{{ entity.username }}</a></td>
+                        <td style="text-align: center;">{% if entity.enabled == true %} oui {% else %} non {% endif %}</td>
+                        <td>
+                            {% for role in entity.roles|reverse %}
+                                {% set L_role = role|split('_') %}
+                                {% if L_role[1] is defined %}
+                                    {{ L_role[1] }} 
+                                {% else %}
+                                    {{ L_role[0] }}
+                                {% endif %}
+                                {% if loop.index != loop.last %}
+                                    ,
+                                {%endif%}
+                            {% endfor %}
+                        </td>                
+                        <td>
+                            <a href="{{ path('nao_membres_show', { 'id': entity.id }) }}">Voir</a>&nbsp;
+                            {% if is_granted(roles.modification) %}
+                                <a href="{{ path('nao_membres_edit', { 'id': entity.id }) }}">Modifier</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% set index = index + 1 %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        Accès refusé
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Détail d'un utilisateur</h1>
+    {% if is_granted("ROLE_NATURALISTE") %}
+    <table class="record_properties">
+        <tbody>
+            <tr>
+                <th>Pseudo</th>
+                <td>{{ entity.username }}</td>
+            </tr>
+            <tr>
+                <th>E-Mail</th>
+                <td>{{ entity.email }}</td>
+            </tr>
+            <tr>
+                <th>Activé</th>
+                <td>{{ entity.enabled?"Oui":"Non" }}</td>
+            </tr>
+            <tr>
+                <th>Dernière&nbsp;Connexion</th>
+                <td>Le {{ entity.lastLogin|date('d/m/Y à H:i:s') }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>
+                    {% for role in entity.roles|reverse %}
+                        {% set L_role = role|split('_') %}
+                        {% if L_role[1] is defined %} 
+                            {{L_role[1]}}
+                        {% else %}
+                            {{ L_role[0] }}
+                        {% endif %}
+                        {% if loop.index != loop.last %}
+                            ,
+                        {%endif%}
+                    {% endfor %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="record_actions">
+        <li>
+            <a href="{{ path('nao_membres_edit', { 'id': entity.id }) }}">
+                Modifier
+            </a>
+        </li>
+        <li>{{ form(delete_form) }}</li>
+        <li>
+            <a href="{{ path('nao_membres_index') }}">
+                Retour
+            </a>
+        </li>
+    </ul>
+    {% else %}
+        Accès refusé
+    {% endif %}
+{% endblock %}

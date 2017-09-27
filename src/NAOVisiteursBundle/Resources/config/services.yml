@@ -1,0 +1,4 @@
+services:
+#    nao_visiteurs.example:
+#        class: NAOVisiteursBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

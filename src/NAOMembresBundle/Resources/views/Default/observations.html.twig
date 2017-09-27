@@ -1,0 +1,36 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    <h1>Mes Observations</h1>
+
+    <p>
+        Ajouter une observation
+    </p>
+    <ul id="onglet">
+        {% if is_granted('ROLE_NATURALISTE')  %}
+            <li><a href='#myObs'>Mes observations</a></li>
+            <li><a href='#validObs'>Validation</a></li>          
+            {% elseif is_granted('ROLE_ORNITHOLOGUE')  %}   
+            <li><a href="#valideObs">Validé</a></li>
+            <li><a href="#waitObs">En Attente</a></li>  
+            
+            {% endif %}
+ </ul>
+            <div id="myObs" class="pageOnglet">
+                mes observation
+            </div>
+
+            <div id="validObs" class="pageOnglet">
+                validation observation
+            </div>
+
+            <div id="valideObs" class="pageOnglet">
+                mes observation valide
+            </div>
+            
+            <div id="waitObs" class="pageOnglet">
+                mes observation en attente
+            </div>
+
+
+   
+{% endblock %}

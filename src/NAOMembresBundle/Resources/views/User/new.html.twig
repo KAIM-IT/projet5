@@ -1,0 +1,42 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+    <h1>Nouvel Utilisateur</h1>
+
+    {% if is_granted(roles.creation) %}
+    {{ form_start(form) }}
+
+
+    <table class="new_record">
+        <tr>
+            <th>Pseudo</th>
+            <td>{{ form_widget(form.username) }}</td>
+        </tr>
+        <tr>
+            <th>E-Mail</th>
+            <td>{{ form_widget(form.email) }}</td>
+        </tr>
+        <tr>
+            <th>Activé</th>
+            <td>{{ form_widget(form.enabled) }}</td>
+        </tr>
+        <tr>
+            <th>Mot&nbsp;de&nbsp;passe</th>
+            <td>{{ form_widget(form.password) }}</td>
+        </tr>
+        <tr>
+            <th>Rôles</th>
+            <td>{{ form_widget(form.roles) }}</td>
+        </tr>
+    </table>
+
+    <ul class="record_actions">
+        <li>{{ form(form) }}</li>
+        <li><a href="{{ path('nao_membres_index') }}">Retour</a></li>
+    </ul>
+    
+    {{ form_end(form) }}
+    {% else %}
+        Accès refusé
+    {% endif %}
+{% endblock %}

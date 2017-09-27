@@ -1,0 +1,9 @@
+services:
+#    nao_membres.example:
+#        class: NAOMembresBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    app.twig_extension:
+        class: NAOMembresBundle\Twig\NAOMembresExtension
+        public: false
+        tags:
+            - { name: twig.extension }
