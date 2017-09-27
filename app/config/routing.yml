@@ -1,0 +1,29 @@
+nao_membres:
+    resource: "@NAOMembresBundle/Controller/"
+    type:     annotation
+    prefix:   membres/
+
+nao_visiteurs:
+    resource: "@NAOVisiteursBundle/Controller/"
+    type:     annotation
+    prefix:   /
+    
+    
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    
+fos_user_security_login:
+    path:      /login
+    defaults:  { _controller: NAOMembresBundle:Security:login, _method: POST }
+    
+fos_user_security_login_min:
+    path:      /loginMin
+    defaults:  { _controller: NAOMembresBundle:Security:loginMin, _method: POST }
+    
+fos_user_change_password:
+    path:     /membres/change-pass
+    defaults:  { _controller: FOSUserBundle:ChangePassword:changePassword }
+    
+fos_user_registration_register:
+    path:     /inscription
+    defaults:  { _controller: FOSUserBundle:Registration:register }

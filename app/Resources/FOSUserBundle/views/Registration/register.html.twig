@@ -1,0 +1,46 @@
+{% extends "::base.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% block body %}
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+
+    <table id='inscription'>
+        <tr>
+            <td>
+                {{ form_label(form.email) }}
+            </td>
+            <td>
+                {{ form_widget(form.email) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(form.username) }}
+            </td>
+            <td>
+                {{ form_widget(form.username) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(form.plainPassword.first) }}
+            </td>
+            <td>
+                {{ form_widget(form.plainPassword.first) }}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form_label(form.plainPassword.second) }}
+            </td>
+            <td>
+                {{ form_widget(form.plainPassword.second) }}
+            </td>
+        </tr>
+    </table>
+    <div id='register'>
+        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>    {{ form_rest(form) }}
+{{ form_end(form) }}
+{% endblock body %}
